@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Random Walker</title>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="550"></canvas>
+</body>
+
+<script>
+
+var canvas = document.getElementById('gameCanvas');
+var canvasContext = canvas.getContext('2d');
+
+var regionWidth = 3;
+
+var selected = new Array();
+
+var dir = 0;
+
+var nextmove = 0;
+var currentTime;
+var INTERVAL = 50;
+
+var x; var y;
+window.onload
+{
+    selected.push([Math.floor(canvas.width/2 / regionWidth)*regionWidth, Math.floor(canvas.height/2/regionWidth)*regionWidth]);
+    x = selected[0][0];
+    y = selected[0][1];
+    setInterval(mainLoop, 1000/60);
+}
+
+function mainLoop()
+{
+    currentTime = Date.now();
+    if(currentTime >= nextmove)
+    {
+        dir = Math.floor(Math.random() * (4));
+        if(dir == 0)
+        {
+            y -= regionWidth;
+        }
+        else if(dir == 1)
+        {
+            y += regionWidth;
+        }
+        else if(dir == 2)
+        {
+            x -= regionWidth;
+        }
+        else
+        {
+            x += regionWidth;
+        }
+
+        selected.push([x, y]);
+        nextmove = currentTime + INTERVAL;
+    }
+    drawCanvas();
+    drawPoints();
+}
+
+function drawCanvas()
+{
+    draw(0, 0, canvas.width, canvas.height, 'black');
+}
+
+function draw(posx, posy, width, height, color)
+{
+    canvasContext.fillStyle = color;
+    canvasContext.fillRect(posx, posy, width, height);
+}
+
+function drawPoints()
+{
+    debugger;
+    for(var i = 0; i < selected.length; i++)
+    {
+        draw(selected[i][0], selected[i][1], regionWidth,regionWidth,'white');
+    }
+}
+</script>
